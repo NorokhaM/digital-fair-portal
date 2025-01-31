@@ -3,6 +3,7 @@ package com.hacknimeto.user_service.services;
 import com.hacknimeto.user_service.entities.User;
 import com.hacknimeto.user_service.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,12 +18,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean isEmailExists(String email) {
-        return userRepository.findByEmail(email).isPresent();
-    }
 
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public User findUserByEmailAndPassword(String email, String password) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        return (BCrypt.checkpw(password, user.getPassword()))? user : null;
     }
 
     public List<User> getUsers() {

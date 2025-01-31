@@ -23,6 +23,29 @@ services:
       - discovery-service
       - postgres
 
+  authorization-service:
+    build : ./authorization-service
+    ports:
+      - "8001:8001"
+    environment:
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka
+    networks:
+      - backend
+    depends_on:
+      - discovery-service
+
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    depends_on:
+      - discovery-service
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka
+
   postgres:
     image: postgres:15
     container_name: postgres

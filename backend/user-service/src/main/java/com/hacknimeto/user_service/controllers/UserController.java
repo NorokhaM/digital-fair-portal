@@ -3,12 +3,12 @@ package com.hacknimeto.user_service.controllers;
 import com.hacknimeto.user_service.entities.User;
 import com.hacknimeto.user_service.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/users")
 @RestController
 public class UserController {
 
@@ -20,13 +20,18 @@ public class UserController {
     }
 
 
-    @GetMapping("/users")
+    @GetMapping("/get")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
-    @PostMapping("/users/register")
-    public User registerUser(User user) {
-        return userService.saveUser(user);
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.saveUser(user));
+    }
+
+    @PostMapping("/login")
+    public User loginUser(@RequestBody User user) {
+        return userService.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
     }
 }
