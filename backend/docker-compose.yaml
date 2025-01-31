@@ -34,6 +34,20 @@ services:
     depends_on:
       - discovery-service
 
+  fair-service:
+    build: ./fair-service
+    ports:
+      - "8002:8002"
+    networks:
+      - backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/digital-fair-portal
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka
+    depends_on:
+      - discovery-service
+      - postgres
 
   api-gateway:
     build: ./api-gateway
