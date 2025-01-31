@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  discovery-service:
+    image: discovery-service
+    build:
+      context: ./discovery-service
+      dockerfile: Dockerfile
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+
+    volumes:
+      - ./backend/discovery-service:/app
+    networks:
+      - backend
+
+networks:
+  backend:
+
