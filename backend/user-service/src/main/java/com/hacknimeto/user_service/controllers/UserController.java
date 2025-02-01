@@ -20,9 +20,9 @@ public class UserController {
     }
 
 
-    @GetMapping("/get")
-    public List<User> getUsers() {
-        return userService.getUsers();
+    @GetMapping("/get/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userService.findUserById(id);
     }
 
     @PostMapping("/register")
